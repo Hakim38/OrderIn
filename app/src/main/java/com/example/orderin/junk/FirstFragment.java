@@ -1,4 +1,4 @@
-package com.example.orderin;
+package com.example.orderin.junk;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.orderin.R;
 import com.example.orderin.databinding.FragmentFirstBinding;
 
 public class FirstFragment extends Fragment {

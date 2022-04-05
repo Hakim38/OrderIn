@@ -20,6 +20,7 @@ import androidx.core.app.ActivityCompat;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
+import com.example.orderin.junk.AdminActivity;
 import com.google.zxing.Result;
 
 public class MainActivity extends AppCompatActivity {
@@ -43,8 +44,6 @@ public class MainActivity extends AppCompatActivity {
 
         //asks user for permission to use camera
         cameraPermission();
-
-
 
         if (CameraAllowed) {
             ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.INTERNET}, PackageManager.PERMISSION_GRANTED);

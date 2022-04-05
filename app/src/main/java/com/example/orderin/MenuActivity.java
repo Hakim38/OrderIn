@@ -1,48 +1,46 @@
 package com.example.orderin;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.orderin.adapters.ExpandAdapter;
+import com.example.orderin.items.Database;
+import com.example.orderin.items.Food;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
 
 public class MenuActivity extends AppCompatActivity {
 
+    public static final String INTENT_KEY = "LIST_INTENT";
+    public static final String INTENT_KEY_ID = "ID_INTENT";
+
     private TextView tvMenu;
-    private MenuSource source;
     private int tableNum, id;
-    private ArrayList<Food> foodList, orderList;
+    private List<Food>  orderList;
+    private List<String>  categoryList;
+    HashMap<String, List<Food>> listItem;
     private ExpandableListView listView;
     private Database db;
+    private ExpandAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         tvMenu = findViewById(R.id.tvMenu);
         Intent intent = getIntent();
+
         //takes table number from scan activity
         tableNum = intent.getIntExtra(MainActivity.INTENT_KEY, 0);
 
@@ -52,56 +50,35 @@ public class MenuActivity extends AppCompatActivity {
         db = new Database();
         db.insertCustomer(id, tableNum);
 
-        source = new MenuSource(this);
-        foodList = db.getFoodList();
         orderList = new ArrayList<>();
+        categoryList = db.getCategory();
+        listItem = db.getFoodList();
         listView = findViewById(R.id.expandList);
+        listView.setIndicatorBounds(0,0);
+        adapter = new ExpandAdapter(this, categoryList, listItem);
 
-        /*
-        test = new ArrayList<>();
-        //gets values from txt document
-        test = source.readLine("menu_test.txt");
-        //TODO get resources for menu and pass into foodList
-        for (int i = 0; i < test.size(); i++){
-            String[] temp = test.get(i).split(";");
-            Food newFood = new Food(temp[0], temp[1], Double.parseDouble(temp[2]));
-            foodList.add(newFood);
-        }
+        listView.setAdapter(adapter);
+        int pos = 0;
+        listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v
+                    , int groupPosition, int childPosition, long id) {
+                orderList.add(listItem.get(categoryList.get(groupPosition)).get(childPosition));
 
-
-        RecyclerView recyclerView =  findViewById(R.id.recyclerView);
-        //custom list adapter for menu
-        CustomAdapter adapter = new CustomAdapter(foodList);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
+                return false;
+            }
+        });
 
 
-
-        recyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(this, recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
-                        // do whatever
-                        orderList.add(foodList.get(position));
-                        db.insertOrder(id, position + 1);
-                        //adapter.setVisibility(!adapter.isVisibility());
-                        //adapter.notifyItemChanged(position);
-
-                    }
-
-                    @Override public void onLongItemClick(View view, int position) {
-                        // do whatever
-                        Log.d("menuClick", "long click");
-                    }
-                })
-        );
-*/
         FloatingActionButton menuCart = findViewById(R.id.menuButtonCart);
         menuCart.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                for(int i = 0; i < orderList.size(); i++) {
-                    db.insertOrder(id, orderList.get(i).getId());
-                }
+                Intent intent = new Intent(MenuActivity.this, OrderActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("ARRAYLIST", (Serializable) orderList);
+                intent.putExtra(INTENT_KEY, bundle);
+                intent.putExtra(INTENT_KEY_ID, id);
+                startActivity(intent);
                 orderList.clear();
             }
         });

@@ -14,7 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OrderIn">
         <activity
-            android:name=".AdminActivity"
+            android:name=".OrderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".junk.AdminActivity"
             android:exported="false"
             android:label="@string/title_activity_admin"
             android:theme="@style/Theme.OrderIn.NoActionBar" />
@@ -27,6 +30,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MenuActivity"
+            android:label="@string/title_activity_menu"></activity>
     </application>
 
 </manifest>

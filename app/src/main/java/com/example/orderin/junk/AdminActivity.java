@@ -1,4 +1,4 @@
-package com.example.orderin;
+package com.example.orderin.junk;
 
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +9,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.orderin.R;
 import com.example.orderin.databinding.ActivityAdminBinding;
 import com.google.android.material.snackbar.Snackbar;
 

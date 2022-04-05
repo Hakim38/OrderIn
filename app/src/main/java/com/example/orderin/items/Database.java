@@ -1,23 +1,26 @@
-package com.example.orderin;
+package com.example.orderin.items;
 
 import android.util.Log;
+
+import com.example.orderin.items.Food;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class Database {
 
     private static Connection connection;
 
-    private final String database = "test";
+    private final String database = "postgres";
     private final String host = "10.0.2.2";
-    private final int port = 5433;
+    private final int port = 5432;
     private final String user = "postgres";
-    private final String password = "postgres";
+    private final String password = "Hakimek9";
     private String url = "jdbc:postgresql://%s:%d/%s";
     private boolean status;
 
@@ -80,34 +83,77 @@ public class Database {
         return c;
     }
 
-    public ArrayList<Food> getFoodList(){
+    public HashMap<String, List<Food>> getFoodList(){
         Statement st = null;
-        ArrayList<Food> foodList = new ArrayList<>();
+        List<Food> foodList = new ArrayList<>();
+        List<String> category = new ArrayList<>();
+        HashMap<String, List<Food>> foodItem = new HashMap<>();
         try {
             st = connection.createStatement();
 
             String sql;
-            sql = "SELECT food_id, food_name, food_description, price FROM food";
+            sql = "SELECT food_id, food_name, food_description, price, category_id FROM food";
             ResultSet rs = st.executeQuery(sql);
             Food newFood = null;
             while (rs.next()) {
                 //Retrieve by column name
-                newFood = new Food(Integer.parseInt(rs.getString("food_id")),rs.getString("food_name"), rs.getString("food_description"), Double.parseDouble(rs.getString("price")));
+                newFood = new Food(Integer.parseInt(rs.getString("food_id")),
+                        rs.getString("food_name"), rs.getString("food_description")
+                        , Double.parseDouble(rs.getString("price")), Integer.parseInt(rs.getString("category_id")));
                 foodList.add(newFood);
-
                 rs.getString("food_description");
 
             }
+
+            sql = "SELECT category_name FROM food_category";
+            rs = st.executeQuery(sql);
+            while (rs.next()) {
+                //Retrieve by column name
+                category.add(rs.getString("category_name"));
+                //Log.d("categoryLog", "category: " + rs.getString("category_name"));
+            }
             rs.close();
             st.close();
-            return foodList;
         }
         catch (Exception e){
             e.printStackTrace();
-            return foodList;
         }
+
+        for (int i = 0; i < category.size(); i++){
+            List<Food> temp = new ArrayList<>();
+            for (int x = 0; x < foodList.size(); x++){
+
+                if (foodList.get(x).getCategory() == i + 1){
+                    temp.add(foodList.get(x));
+                    //Log.d("categoryLog", "temp: " + temp.get(x).getName());
+                }
+            }
+            foodItem.put(category.get(i), temp);
+
+        }
+        Log.d("categoryLog", "category: " + foodItem.keySet().toString());
+        return foodItem;
     }
 
+    public List<String> getCategory(){
+        Statement st = null;
+        List<String> category = new ArrayList<>();
+        try {
+            st = connection.createStatement();
+
+            String sql;
+            sql = "SELECT category_name FROM food_category";
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                //Retrieve by column name
+                category.add(rs.getString("category_name"));
+                //Log.d("categoryLog", "category: " + rs.getString("category_name"));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return category;
+    }
     public void insertCustomer(int id, int tableNum){
         Statement st;
         try {
