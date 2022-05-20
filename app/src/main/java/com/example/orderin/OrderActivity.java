@@ -11,12 +11,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.orderin.adapters.ListAdapter;
+import com.example.orderin.items.DataHandler;
 import com.example.orderin.items.Database;
 import com.example.orderin.items.Food;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class OrderActivity extends AppCompatActivity {
@@ -27,6 +29,7 @@ public class OrderActivity extends AppCompatActivity {
     private FloatingActionButton button;
     private ListView listView;
     private TextView txtTotal,txtEmpty;
+    private ListAdapter listAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,16 +37,15 @@ public class OrderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_order);
         txtEmpty = findViewById(R.id.orderEmpty);
         txtEmpty.setVisibility(View.GONE);
-        //id = getIntent().getIntExtra(MenuActivity.INTENT_KEY, 0);
         Intent intent = getIntent();
         id = intent.getIntExtra(MenuActivity.INTENT_KEY_ID, 0);
-        Log.d("testLog", "id: " + id);
         Bundle bundle = intent.getBundleExtra(MenuActivity.INTENT_KEY);
         orderList = (ArrayList<Food>) bundle.getSerializable("ARRAYLIST");
+
         db = new Database();
 
         listView = findViewById(R.id.orderListView);
-        ListAdapter listAdapter = new ListAdapter(this, R.layout.list_adapter, orderList);
+        listAdapter = new ListAdapter(this, R.layout.list_adapter, orderList);
         listView.setAdapter(listAdapter);
 
         makeTotal();
@@ -60,6 +62,21 @@ public class OrderActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    protected void onStop() {
+        DataHandler.getInstance().setList(orderList);
+        super.onStop();
+    }
+
+    @Override
+    protected void onStart() {
+        if (DataHandler.getInstance().getList() != null) {
+            orderList.addAll(DataHandler.getInstance().getList());
+            makeTotal();
+        }
+        super.onStart();
     }
 
     private void makeTotal(){

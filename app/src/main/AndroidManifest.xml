@@ -22,7 +22,7 @@
             android:label="@string/title_activity_admin"
             android:theme="@style/Theme.OrderIn.NoActionBar" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ScannerActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

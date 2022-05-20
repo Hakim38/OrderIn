@@ -42,7 +42,7 @@ public class MenuActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         //takes table number from scan activity
-        tableNum = intent.getIntExtra(MainActivity.INTENT_KEY, 0);
+        tableNum = intent.getIntExtra(ScannerActivity.INTENT_KEY, 0);
 
         tvMenu.setText("Table " + tableNum);
         id = new Random().nextInt();
@@ -58,7 +58,6 @@ public class MenuActivity extends AppCompatActivity {
         adapter = new ExpandAdapter(this, categoryList, listItem);
 
         listView.setAdapter(adapter);
-        int pos = 0;
         listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v

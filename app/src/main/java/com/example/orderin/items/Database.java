@@ -15,21 +15,17 @@ import java.util.List;
 public class Database {
 
     private static Connection connection;
-
     private final String database = "postgres";
     private final String host = "10.0.2.2";
     private final int port = 5432;
     private final String user = "postgres";
-    private final String password = "Hakimek9";
+    private final String password = "postgres";
     private String url = "jdbc:postgresql://%s:%d/%s";
     private boolean status;
 
     public Database(){
         this.url = String.format(this.url, this.host, this.port, this.database);
         connect();
-        //this.disconnect;
-        System.out.println("connection status: " + status);
-        Log.d("testLog", "connection status: " + status);
     }
 
     public String getDatabase() {
@@ -42,14 +38,9 @@ public class Database {
             public void run() {
 
                 try{
-                    Log.d("testLog", "trying to connect");
                     Class.forName("org.postgresql.Driver");
                     connection = DriverManager.getConnection(url, user, password);
                     status = true;
-                    System.out.println("connected: " + status);
-                    Log.d("testLog", "connected: " + status);
-
-
                 }
                 catch (Exception e){
                     status = false;
@@ -89,28 +80,26 @@ public class Database {
         List<String> category = new ArrayList<>();
         HashMap<String, List<Food>> foodItem = new HashMap<>();
         try {
+            //establish connection to database
             st = connection.createStatement();
-
             String sql;
+            //executing query to retrieve food
             sql = "SELECT food_id, food_name, food_description, price, category_id FROM food";
             ResultSet rs = st.executeQuery(sql);
             Food newFood = null;
             while (rs.next()) {
-                //Retrieve by column name
+                //Retrieve food by column name
                 newFood = new Food(Integer.parseInt(rs.getString("food_id")),
                         rs.getString("food_name"), rs.getString("food_description")
                         , Double.parseDouble(rs.getString("price")), Integer.parseInt(rs.getString("category_id")));
                 foodList.add(newFood);
-                rs.getString("food_description");
-
             }
-
+            //executing query to retrieve category
             sql = "SELECT category_name FROM food_category";
             rs = st.executeQuery(sql);
             while (rs.next()) {
-                //Retrieve by column name
+                //Retrieve category by column name
                 category.add(rs.getString("category_name"));
-                //Log.d("categoryLog", "category: " + rs.getString("category_name"));
             }
             rs.close();
             st.close();
@@ -125,13 +114,10 @@ public class Database {
 
                 if (foodList.get(x).getCategory() == i + 1){
                     temp.add(foodList.get(x));
-                    //Log.d("categoryLog", "temp: " + temp.get(x).getName());
                 }
             }
             foodItem.put(category.get(i), temp);
-
         }
-        Log.d("categoryLog", "category: " + foodItem.keySet().toString());
         return foodItem;
     }
 
@@ -172,16 +158,11 @@ public class Database {
     public void insertOrder(int customerId, int foodId){
         try
         {
-
             Statement st;
             st = connection.createStatement();
             String sql;
             sql = "INSERT INTO food_order (customer_id, food_id) VALUES (" + customerId + ", " + foodId + ")";
-            Log.d("menuClick", "order made: " + sql);
             st.executeQuery(sql);
-            Log.d("menuClick", "order made: " + sql);
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }

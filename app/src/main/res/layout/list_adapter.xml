@@ -1,31 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:padding="10dp"
-    android:background="@color/white">
+    android:padding="10dp">
 
     <TextView
+        android:id="@+id/orderAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="30dp"
-        android:id="@+id/orderAmount"
         android:layout_weight="0"
-        />
+        android:paddingLeft="30dp" />
+
+
     <TextView
+        android:id="@+id/orderName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingLeft="30dp"
-        android:id="@+id/orderName"
         android:layout_weight="1"
-        />
+        android:paddingLeft="30dp" />
+
     <TextView
+        android:id="@+id/orderPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="30dp"
-        android:id="@+id/orderPrice"
         android:layout_weight="0"
-    />
+        android:paddingLeft="30dp" />
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnRemove"
+            android:layout_width="wrap_content"
+            android:layout_height="19dp"
+            android:layout_weight="0"
+            android:background="@color/white"
+            android:text="-"
+            android:textColor="@color/black" />
+    </FrameLayout>
 </LinearLayout>

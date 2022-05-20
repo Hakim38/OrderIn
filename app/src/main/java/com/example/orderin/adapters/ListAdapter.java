@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.orderin.R;
@@ -37,21 +38,26 @@ public View getView(int position, View convertView, ViewGroup parent) {
         Food p = getItem(position);
 
         if (p != null) {
-        TextView tt1 = (TextView) v.findViewById(R.id.orderAmount);
-        TextView tt2 = (TextView) v.findViewById(R.id.orderName);
-        TextView tt3 = (TextView) v.findViewById(R.id.orderPrice);
+                TextView tt1 = (TextView) v.findViewById(R.id.orderAmount);
+                TextView tt2 = (TextView) v.findViewById(R.id.orderName);
+                TextView tt3 = (TextView) v.findViewById(R.id.orderPrice);
+                Button removeButton = v.findViewById(R.id.btnRemove);
 
-        if (tt1 != null) {
-        tt1.setText("1x");
-        }
+                if (tt1 != null) {
+                        tt1.setText("1x");
+                }
 
-        if (tt2 != null) {
-        tt2.setText(p.getName());
-        }
+                if (tt2 != null) {
+                        tt2.setText(p.getName());
+                }
 
-        if (tt3 != null) {
-        tt3.setText(String.valueOf(p.getPrice()));
-        }
+                if (tt3 != null) {
+                        tt3.setText("" + String.valueOf(p.getPrice()) + " €");
+                }
+
+                if (removeButton != null){
+                        removeButton.setText("-");
+                }
         }
 
         return v;

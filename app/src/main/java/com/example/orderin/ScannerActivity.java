@@ -20,51 +20,45 @@ import androidx.core.app.ActivityCompat;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
-import com.example.orderin.junk.AdminActivity;
 import com.google.zxing.Result;
 
-public class MainActivity extends AppCompatActivity {
+public class ScannerActivity extends AppCompatActivity {
 
     public static final String INTENT_KEY = "result";
 
     private CodeScanner mCodeScanner;
     private TextView tvResult;
-    private boolean CameraAllowed = false;
+    private boolean CameraAllowed;
     private final int CAMERA_PERM = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_scanner);
 
         tvResult = findViewById(R.id.textView);
 
         CodeScannerView scannerView = findViewById(R.id.scannerView);
         mCodeScanner = new CodeScanner(this, scannerView);
 
+        CameraAllowed = false;
+
         //asks user for permission to use camera
         cameraPermission();
-
         if (CameraAllowed) {
+            //get internet permissions
             ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.INTERNET}, PackageManager.PERMISSION_GRANTED);
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
-            Log.d("testLog", "System started");
             mCodeScanner.setDecodeCallback(new DecodeCallback() {
                 @Override
                 public void onDecoded(@NonNull Result result) {
                     //decodes QR code into Result variable
-                    Log.d("testLog", "Decoded");
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if (result.getText().toString().equals("password")){
-                                //if the QR Result is password unlocks admin mode
-                                Toast.makeText(MainActivity.this, "Admin Unlocked", Toast.LENGTH_SHORT).show();
-                                toAdmin();
-                            }
-                            //checks if QR code is an integer value
-                            else if (isNumeric(result.getText().toString())) {
+                            Log.d("testLog", "run: decoding");
+                           if (isNumeric(result.getText().toString())) {
                                 //number of tables from 1 to 4
                                 if (Integer.parseInt(result.getText().toString()) > 0 && Integer.parseInt(result.getText().toString()) < 5) {
                                     int num = Integer.parseInt(result.getText().toString());
@@ -73,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                             else {
                                 //QR code is not a recognised value
-                                Toast.makeText(MainActivity.this, result.getText() + " is not a recognised table.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ScannerActivity.this, result.getText() + " is not a recognised table.", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -91,17 +85,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void toMenu(int table){
         //takes user to menu
-        Intent intent = new Intent(MainActivity.this, MenuActivity.class);
+        Intent intent = new Intent(ScannerActivity.this, MenuActivity.class);
         intent.putExtra(INTENT_KEY, table);
         startActivity(intent);
         finish();
     }
-    private void toAdmin (){
-        //takes user to admin mode
-        Intent intent = new Intent(MainActivity.this, AdminActivity.class);
-        startActivity(intent);
-        finish();
-    }
+
     public static boolean isNumeric(String str) {
         try {
             Double.parseDouble(str);
@@ -112,9 +101,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void cameraPermission(){
+        //zistenie verzie Android
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP){
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERM);
+                ActivityCompat.requestPermissions(ScannerActivity.this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERM);
             }
             else {
                 mCodeScanner.startPreview();
@@ -126,22 +116,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == CAMERA_PERM) {
+            //ak už bola kamera povolena, spúšťame skener
             if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 mCodeScanner.startPreview();
                 CameraAllowed = true;
             }
             else {
+                //ak kamera nie je povolená, otvárame dialógové okno
                 if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)){
                     new AlertDialog.Builder(this)
                             .setTitle("Permission")
                             .setMessage("This app requires permission to use Camera")
                             .setPositiveButton("Allow", new DialogInterface.OnClickListener() {
                                 @Override
+                                //prístup povolený
                                 public void onClick(DialogInterface dialog, int which) {
-                                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERM);
+                                    ActivityCompat.requestPermissions(ScannerActivity.this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERM);
                                 }
                             }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override
+                        //prístup zamietnutý
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
                             finish();

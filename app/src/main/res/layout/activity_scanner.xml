@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ScannerActivity">
 
     <com.budiyev.android.codescanner.CodeScannerView
+        android:id="@+id/scannerView"
         android:layout_width="match_parent"
         android:layout_height="400dp"
-        android:id="@+id/scannerView"
         app:autoFocusButtonColor="@android:color/white"
         app:autoFocusButtonVisible="true"
         app:flashButtonColor="@android:color/white"
         app:flashButtonVisible="true"
-        app:maskColor="#6A000000"/>
+        app:maskColor="#6A000000" />
 
     <TextView
         android:id="@+id/textView"

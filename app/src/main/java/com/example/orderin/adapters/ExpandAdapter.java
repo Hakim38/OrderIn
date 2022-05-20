@@ -68,13 +68,15 @@ public class ExpandAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        //position of category
         String group = (String) getGroup(groupPosition);
         if (convertView == null){
+            //inflates our layout
             LayoutInflater layoutInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.list_group, null);
         }
-
+        //puts text in textview
         TextView textView = convertView.findViewById(R.id.list_parent);
         textView.setText(group);
         return convertView;

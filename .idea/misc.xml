@@ -7,12 +7,17 @@
         <entry key="..\:/Users/Acer/AndroidStudioProjects/OrderIn/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Acer/AndroidStudioProjects/OrderIn/app/src/main/res/layout/activity_menu.xml" value="0.1" />
         <entry key="..\:/Users/Acer/AndroidStudioProjects/OrderIn/app/src/main/res/mipmap-anydpi-v26/cartccart.xml" value="0.2265" />
+        <entry key="..\:/Users/hakim/AndroidStudioProjects/OrderIn/app/src/main/res/drawable/my_button_bg.xml" value="0.3505" />
         <entry key="..\:/Users/hakim/AndroidStudioProjects/OrderIn/app/src/main/res/layout/activity_admin.xml" value="0.22" />
         <entry key="..\:/Users/hakim/AndroidStudioProjects/OrderIn/app/src/main/res/layout/activity_main.xml" value="0.18802083333333333" />
-        <entry key="..\:/Users/hakim/AndroidStudioProjects/OrderIn/app/src/main/res/layout/activity_menu.xml" value="0.2" />
+        <entry key="..\:/Users/hakim/AndroidStudioProjects/OrderIn/app/src/main/res/layout/activity_menu.xml" value="0.25" />
         <entry key="..\:/Users/hakim/AndroidStudioProjects/OrderIn/app/src/main/res/layout/activity_order.xml" value="0.18697916666666667" />
+        <entry key="..\:/Users/hakim/AndroidStudioProjects/OrderIn/app/src/main/res/layout/activity_scanner.xml" value="0.25" />
+        <entry key="..\:/Users/hakim/AndroidStudioProjects/OrderIn/app/src/main/res/layout/content_admin.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/hakim/AndroidStudioProjects/OrderIn/app/src/main/res/layout/fragment_first.xml" value="0.24427083333333333" />
+        <entry key="..\:/Users/hakim/AndroidStudioProjects/OrderIn/app/src/main/res/layout/fragment_second.xml" value="0.24427083333333333" />
         <entry key="..\:/Users/hakim/AndroidStudioProjects/OrderIn/app/src/main/res/layout/list_adapter.xml" value="0.18697916666666667" />
-        <entry key="..\:/Users/hakim/AndroidStudioProjects/OrderIn/app/src/main/res/layout/list_group.xml" value="0.12635869565217392" />
+        <entry key="..\:/Users/hakim/AndroidStudioProjects/OrderIn/app/src/main/res/layout/list_group.xml" value="0.33" />
         <entry key="..\:/Users/hakim/AndroidStudioProjects/OrderIn/app/src/main/res/layout/list_item.xml" value="0.25" />
       </map>
     </option>
